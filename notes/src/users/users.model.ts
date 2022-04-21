@@ -25,5 +25,5 @@ export class User extends Model<User, UserCreationAttrs> {
   password: string;
 
   @HasMany(() => Note)
-  posts: Note[];
+  notes: Note[];
 }
