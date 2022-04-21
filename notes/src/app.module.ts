@@ -1,15 +1,15 @@
 import { Module } from '@nestjs/common';
+import { DatabaseModule } from 'database/database.module';
 
+import { AuthModule } from './auth/auth.module';
 import { configModule } from './config.root';
-import { DatabaseModule } from './database/database.module';
-import { MainGateway } from './main.gateway';
 import { NotesModule } from './notes/notes.module';
 import { UsersModule } from './users/users.module';
-import { AuthModule } from './auth/auth.module';
 
+// import { MainGateway } from './main.gateway';
 @Module({
-  imports: [UsersModule, NotesModule, configModule, DatabaseModule, AuthModule],
+  imports: [DatabaseModule, AuthModule, UsersModule, NotesModule, configModule],
   controllers: [],
-  providers: [MainGateway],
+  providers: [],
 })
 export class AppModule {}

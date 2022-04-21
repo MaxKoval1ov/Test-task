@@ -1,11 +1,11 @@
-import { Injectable } from '@nestjs/common';
-import { InjectModel } from '@nestjs/sequelize';
+import { Inject, Injectable } from '@nestjs/common';
+import { NOTES_REPOSITORY } from 'database/constants';
 import { CreateNoteDto } from './dto/create-note.dto';
 import { Note } from './notes.model';
 
 @Injectable()
 export class NotesService {
-  constructor(@InjectModel(Note) private noteRepository: typeof Note) {}
+  constructor(@Inject(NOTES_REPOSITORY) private noteRepository: typeof Note) {}
 
   async getAll(): Promise<Note[]> {
     return await this.noteRepository.findAll();
@@ -19,11 +19,11 @@ export class NotesService {
     return await this.noteRepository.findOne({ where: { id } });
   }
 
-  async deleteById(id: string): Promise<number> {
+  async deleteById(id: number): Promise<number> {
     return await this.noteRepository.destroy({ where: { id } });
   }
 
-  async deleteByUserId(userId: string): Promise<number> {
+  async deleteByUserId(userId: number): Promise<number> {
     return await this.noteRepository.destroy({ where: { userId } });
   }
 

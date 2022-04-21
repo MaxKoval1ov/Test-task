@@ -34,6 +34,7 @@
     "amqplib": "^0.8.0",
     "bcryptjs": "^2.4.3",
     "class-validator": "^0.13.2",
+    "cross-env": "^7.0.3",
     "mysql2": "^2.3.3",
     "passport-jwt": "^4.0.0",
     "pg": "^8.7.3",
