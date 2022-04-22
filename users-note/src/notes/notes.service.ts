@@ -1,7 +1,7 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { NOTES_REPOSITORY } from 'database/constants';
+import { NOTES_REPOSITORY } from '../database/constants';
 import { CreateNoteDto } from './dto/create-note.dto';
-import { Note } from './notes.model';
+import { Note } from '../database/models/notes.model';
 
 @Injectable()
 export class NotesService {
@@ -15,7 +15,7 @@ export class NotesService {
     return await this.noteRepository.findAll({ where: { userId } });
   }
 
-  async getById(id: string): Promise<Note> {
+  async getById(id: number): Promise<Note> {
     return await this.noteRepository.findOne({ where: { id } });
   }
 

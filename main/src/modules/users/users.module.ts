@@ -6,7 +6,7 @@ import { UsersController } from './users.controller';
   imports: [
     ClientsModule.register([
       {
-        name: 'NOTE_SERVICE',
+        name: 'USERS_SERVICE',
         transport: Transport.RMQ,
         options: {
           urls: [

@@ -2,8 +2,7 @@ import { Inject, Injectable } from '@nestjs/common';
 import { USERS_REPOSITORY } from 'modules/database/constants';
 
 import { CreateUserDto } from './dto/create-user.dto';
-import { User } from './users.model';
-
+import { User } from '../database/models/users.model';
 @Injectable()
 export class UsersService {
   constructor(@Inject(USERS_REPOSITORY) private userRepo: typeof User) {}

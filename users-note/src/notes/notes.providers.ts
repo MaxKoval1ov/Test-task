@@ -1,6 +1,6 @@
-import { NOTES_REPOSITORY } from 'database/constants';
+import { NOTES_REPOSITORY } from '../database/constants';
 
-import { Note } from './notes.model';
+import { Note } from '../database/models/notes.model';
 
 export const notesProviders = [
   {

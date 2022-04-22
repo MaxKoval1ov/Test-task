@@ -7,7 +7,7 @@ import {
   Table,
 } from 'sequelize-typescript';
 
-import { User } from '../users/users.model';
+import { User } from './users.model';
 
 interface PostCreationAttrs {
   title: string;

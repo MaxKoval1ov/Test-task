@@ -17,7 +17,7 @@ import { NotesActions } from './notes.actions';
 
 @Controller('notes')
 export class NotesController {
-  constructor(@Inject('NOTE_SERVICE') private readonly client: ClientProxy) {}
+  constructor(@Inject('NOTES_SERVICE') private readonly client: ClientProxy) {}
 
   @Get(':id')
   getById(@Param('id') id: string) {
@@ -26,28 +26,37 @@ export class NotesController {
 
   @Get()
   getAllNotes() {
-    return this.client.emit(NotesActions.GET_ALL_NOTES, 'All notes');
+    return this.client
+      .send(NotesActions.GET_ALL_NOTES, 'All notes')
+      .toPromise();
   }
 
   @Post()
   @HttpCode(HttpStatus.CREATED)
   @Header('Cache-Control', 'none')
   create(@Body() createNote: CreateNoteDto) {
-    return this.client.emit(NotesActions.CREATE_NOTE, createNote);
+    return this.client.send(NotesActions.CREATE_NOTE, createNote).toPromise();
   }
 
   @Delete(':id')
   delete(@Param('id') id: number) {
-    return this.client.emit(NotesActions.DELETE_NOTE, id);
+    return this.client.send(NotesActions.DELETE_NOTE, id).toPromise();
   }
 
   @Delete('user/:id')
   deleteAllUsersNodes(@Param('id') id: number) {
-    return this.client.emit(NotesActions.DELETE_NOTES_BY_USERID, id);
+    return this.client
+      .send(NotesActions.DELETE_NOTES_BY_USERID, id)
+      .toPromise(); //LastValueFrom
+  }
+
+  @Get('users/:id')
+  getNodesByUserId(@Param('id') id: number) {
+    return this.client.send(NotesActions.GET_NOTES_BY_USERID, id).toPromise();
   }
 
   @Put()
   update(@Body() updatedNote: CreateNoteDto) {
-    return this.client.emit(NotesActions.UPDATE_NOTE, updatedNote);
+    return this.client.send(NotesActions.UPDATE_NOTE, updatedNote).toPromise();
   }
 }

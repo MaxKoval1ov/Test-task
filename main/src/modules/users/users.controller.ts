@@ -14,7 +14,7 @@ import { UserActions } from './users.actions';
 
 @Controller('users')
 export class UsersController {
-  constructor(@Inject('NOTE_SERVICE') private readonly client: ClientProxy) {}
+  constructor(@Inject('USERS_SERVICE') private readonly client: ClientProxy) {}
 
   @Post()
   create(@Body() userDto: CreateUserDto) {
@@ -23,17 +23,16 @@ export class UsersController {
 
   @Delete(':id')
   delete(@Param('id') id: number) {
-    console.log(id);
     return this.client.send(UserActions.DELETE_USER, id).toPromise();
   }
 
   @Get()
   getAll() {
-    return this.client.send(UserActions.GET_ALL_USERS, '');
+    return this.client.send(UserActions.GET_ALL_USERS, '').toPromise();
   }
 
   @Put()
   update(@Body() newUser: CreateUserDto) {
-    return this.client.emit(UserActions.UPDATE_USER, newUser);
+    return this.client.send(UserActions.UPDATE_USER, newUser).toPromise();
   }
 }

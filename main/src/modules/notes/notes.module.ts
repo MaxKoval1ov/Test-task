@@ -6,7 +6,7 @@ import { NotesController } from './notes.controller';
   imports: [
     ClientsModule.register([
       {
-        name: 'NOTE_SERVICE',
+        name: 'NOTES_SERVICE',
         transport: Transport.RMQ,
         options: {
           urls: [

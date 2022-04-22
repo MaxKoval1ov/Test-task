@@ -1,55 +1,45 @@
-import {
-  Body,
-  Controller,
-  Delete,
-  Get,
-  Header,
-  HttpCode,
-  HttpStatus,
-  Param,
-  Post,
-  Put,
-} from '@nestjs/common';
-import { ApiTags } from '@nestjs/swagger';
+import { Controller } from '@nestjs/common';
+import { EventPattern, Payload } from '@nestjs/microservices';
 
+import { Note } from '../database/models/notes.model';
 import { CreateNoteDto } from './dto/create-note.dto';
-import { Note } from './notes.model';
+import { NotesActions } from './notes.actions';
 import { NotesService } from './notes.service';
 
-@ApiTags('Заметки')
 @Controller('notes')
 export class NotesController {
   constructor(private readonly noteService: NotesService) {}
 
-  @Get(':id')
-  getById(@Param('id') id: string): Promise<Note> {
-    return this.noteService.getById(id);
+  @EventPattern(NotesActions.GET_NOTE)
+  async getById(@Payload() id: number): Promise<Note> {
+    return await this.noteService.getById(id);
   }
 
-  @Get()
-  getAllNotes(): Promise<Note[]> {
-    return this.noteService.getAll();
+  @EventPattern(NotesActions.GET_ALL_NOTES)
+  async getAllNotes(): Promise<Note[]> {
+    const all = await this.noteService.getAll();
+    console.log(all);
+    return all;
   }
 
-  @Post()
-  @HttpCode(HttpStatus.CREATED)
-  @Header('Cache-Control', 'none')
-  create(@Body() createNote: CreateNoteDto): Promise<Note> {
-    return this.noteService.create(createNote);
+  @EventPattern(NotesActions.CREATE_NOTE)
+  async create(@Payload() createNote: CreateNoteDto): Promise<Note> {
+    return await this.noteService.create(createNote);
   }
 
-  @Delete(':id')
-  delete(@Param('id') id: number): Promise<number> {
+  @EventPattern(NotesActions.DELETE_NOTE)
+  delete(@Payload() id: number): Promise<number> {
     return this.noteService.deleteById(id);
   }
 
-  @Delete('user/:id')
-  deleteAllUsersNodes(@Param('id') id: number): Promise<number> {
-    return this.noteService.deleteByUserId(id);
+  @EventPattern(NotesActions.DELETE_NOTES_BY_USERID)
+  async deleteAllUsersNodes(@Payload('id') id: number): Promise<number> {
+    return await this.noteService.deleteByUserId(id);
   }
 
-  @Put()
-  update(@Body() updatedNote: Note) {
-    return this.noteService.update(updatedNote);
+  @EventPattern(NotesActions.UPDATE_NOTE)
+  async update(@Payload() updatedNote: Note) {
+    console.log('first');
+    return await this.noteService.update(updatedNote);
   }
 }
