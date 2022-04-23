@@ -9,6 +9,7 @@ import {
   Put,
 } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
+import { lastValueFrom } from 'rxjs';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UserActions } from './users.actions';
 
@@ -28,7 +29,7 @@ export class UsersController {
 
   @Get()
   getAll() {
-    return this.client.send(UserActions.GET_ALL_USERS, '').toPromise();
+    return lastValueFrom(this.client.send(UserActions.GET_ALL_USERS, ''));
   }
 
   @Put()

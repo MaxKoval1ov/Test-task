@@ -12,6 +12,7 @@ import {
   Put,
 } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
+import { lastValueFrom } from 'rxjs';
 import { CreateNoteDto } from './dto/create-note.dto';
 import { NotesActions } from './notes.actions';
 
@@ -26,9 +27,9 @@ export class NotesController {
 
   @Get()
   getAllNotes() {
-    return this.client
-      .send(NotesActions.GET_ALL_NOTES, 'All notes')
-      .toPromise();
+    return lastValueFrom(
+      this.client.send(NotesActions.GET_ALL_NOTES, 'All notes'),
+    );
   }
 
   @Post()

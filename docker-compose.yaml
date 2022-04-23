@@ -1,0 +1,67 @@
+version: "3.9"
+
+services:
+  main:
+    container_name: main
+    build: 
+      context: main/  
+      # env_file:
+      #   - .development.env
+    # volumes:
+    #   - .:/app
+    #   - /app/node_modules
+    ports:
+      - 5000:5000
+      - 3333:3333
+    command: npm run start:dev
+    restart: always
+
+  users:
+    container_name: users
+    build: 
+      context: users/
+    env_file:
+      - .development.env
+    # volumes:
+    #   - .:/app
+    #   - /app/node_modules
+    ports:
+      - 6000:6000
+      - 4444:4444
+    command: npm run listen
+    depends_on:
+      - postgres
+    restart: always
+
+  notes:
+    container_name: notes
+    build: 
+      context: users-note/
+    env_file:
+      - .development.env
+    # volumes:
+    #   - .:/app
+    #   - /app/node_modules
+    ports:
+      - 7000:7000
+      - 5555:5555
+    command: npm run listen
+    depends_on:
+      - postgres
+    restart: always
+
+  postgres:
+    container_name: postgres
+    image: postgres:latest
+    env_file:
+      - .development.env
+    environment:
+      PG_DATA: /var/lib/postgresql/data
+    ports:
+      - 5432:5432
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    restart: always
+    
+volumes:
+  pgdata:    
